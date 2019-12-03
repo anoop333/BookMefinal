@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             params.put("uname",uname.getText().toString());
                             params.put("address",address.getText().toString());
                             params.put("phone",phone.getText().toString());
-// Toast.makeText(MainActivity.this,"submitted",Toast.LENGTH_LONG).show();
+// Toast.makeText(Pay.this,"submitted",Toast.LENGTH_LONG).show();
 
 //returning parameter
                             return params;

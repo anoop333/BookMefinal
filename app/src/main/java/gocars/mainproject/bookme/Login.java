@@ -2,6 +2,7 @@ package gocars.mainproject.bookme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +49,16 @@ Button n;
                                 public void onResponse(String response) {
 //If we are getting success from server
                                     Toast.makeText(Login.this,response,Toast.LENGTH_LONG).show();
+if(response.equals("success"))
+{
+    Intent intent=new Intent(Login.this,Home.class);
+    startActivity(intent);
+}
+else
+{
+    Toast.makeText(Login.this,"Incorrect Credentials",Toast.LENGTH_LONG).show();
 
+}
                                     try {
                                         JSONArray jsonArray = new JSONArray(response);
                                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -80,7 +90,7 @@ Button n;
 
                             params.put("name",edt.getText().toString());
                             params.put("password",edt1.getText().toString());
-// Toast.makeText(MainActivity.this,"submitted",Toast.LENGTH_LONG).show();
+// Toast.makeText(Pay.this,"submitted",Toast.LENGTH_LONG).show();
 
 //returning parameter
                             return params;
