@@ -5,47 +5,41 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class Chequeadapter extends RecyclerView.Adapter<Chequeadapter.ProductViewHolder> {
+public class Chequeadapter extends RecyclerView.Adapter<Chequeadapter.ProductViewHolder>  {
 
     private Context mCtx;
-    private List<Cheque> productList;
+    private ArrayList<Cheque> productList;
 
-    public Chequeadapter(Context mCtx, List<Cheque> productList) {
+
+    public Chequeadapter(Context mCtx, ArrayList<Cheque> pproductList) {
         this.mCtx = mCtx;
-        this.productList = productList;
-    }
+        productList=pproductList;
 
+    }
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.adapterfor_c, null);
         return new ProductViewHolder(view);
-
     }
-
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, int position) {
-      final   Cheque cheque;   cheque = productList.get(position);
+      final   Cheque cheque;
+      cheque = productList.get(position);
 
         //loading the image
         Glide.with(mCtx)
@@ -62,11 +56,9 @@ holder.cart.setOnClickListener(new View.OnClickListener() {
         Intent i=new Intent(
                 mCtx,Pay.class
         );
-        i.putExtra("amount",cheque.getPrize());
+        i.putExtra("amount",cheque.getUser());
+        i.putExtra("bname",cheque.getStatus());
         mCtx.startActivity(i);
-
-
-
     }
 
 });
@@ -82,6 +74,14 @@ holder.cart.setOnClickListener(new View.OnClickListener() {
         return productList.size();
     }
 
+
+//    public void filterList(ArrayList<Cheque> filteredList) {
+//        productList = filteredList;
+//        notifyDataSetChanged();
+//    }
+
+
+
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -90,8 +90,6 @@ holder.cart.setOnClickListener(new View.OnClickListener() {
 Button cart;
         public ProductViewHolder(View itemView) {
             super(itemView);
-
-
             imageView = itemView.findViewById(R.id.imageView21);
             text=itemView.findViewById(R.id.textView21);
             txtt=itemView.findViewById(R.id.restname1);
@@ -101,7 +99,9 @@ Button cart;
         }
 
     }
+    public void filterList(ArrayList<Cheque> filteredList) {
+        productList = filteredList;
+        notifyDataSetChanged();
+    }
 
-
-
-}
+    }

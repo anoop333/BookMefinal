@@ -9,22 +9,39 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Pay extends AppCompatActivity {
     final int UPI_PAYMENT = 0;
-
+ImageView imgpa;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
         intent=getIntent();
-        payUsingUpi("name","anoopsuvarnan1@oksbi","test","1");
-    }
 
+        imgpa=findViewById(R.id.imageView3);
+        payUsingUpi("name","daineschacko05@oksbi","Book",intent.getStringExtra("amount"));
+    }
     void payUsingUpi(  String name,String upiId, String note, String amount) {
         Log.e("main ", "name "+name +"--up--"+upiId+"--"+ note+"--"+amount);
         Uri uri = Uri.parse("upi://pay").buildUpon()
@@ -110,11 +127,15 @@ public class Pay extends AppCompatActivity {
             if (status.equals("success")) {
                 //Code to handle successful transaction here.
                 Toast.makeText(Pay.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
+                final String finalApprovalRefNo = approvalRefNo;
                 Log.e("UPI", "payment successfull: "+approvalRefNo);
+                imgpa.setVisibility(View.VISIBLE);
             }
             else if("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(Pay.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
                 Log.e("UPI", "Cancelled by user: "+approvalRefNo);
+                Intent intent=new Intent(Pay.this,Home.class);
+                startActivity(intent);
             }
             else {
                 Toast.makeText(Pay.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
@@ -137,4 +158,7 @@ public class Pay extends AppCompatActivity {
         }
         return false;
     }
-}
+
+
+    }
+

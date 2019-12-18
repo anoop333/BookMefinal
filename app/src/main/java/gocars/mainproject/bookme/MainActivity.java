@@ -2,7 +2,9 @@ package gocars.mainproject.bookme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +23,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,11 +30,14 @@ public class MainActivity extends AppCompatActivity {
     EditText name, uname, pass, confpass, address, phone;
     Button submit;
     TextView login;
-
+    SharedPreferences sharedPreferences;
+    private  boolean loggedin=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences=getSharedPreferences("number", Context.MODE_PRIVATE);
+        loggedin=sharedPreferences.getBoolean("hi",false);
         submit = findViewById(R.id.button);
         name = findViewById(R.id.uname);
         uname = findViewById(R.id.user);
@@ -42,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         phone = findViewById(R.id.phone);
         login = findViewById(R.id.textView);
-
+        if (loggedin)
+        {
+            Intent intent=new Intent(MainActivity.this,Home.class);
+            startActivity(intent);
+            finish();
+        }
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
